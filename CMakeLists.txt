@@ -23,13 +23,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # find libraries
 
 find_package(Eigen3 3.3 REQUIRED)
-find_package(OpenCV 4.0 QUIET)
-if(NOT OpenCV_FOUND)
-  find_package(OpenCV 3.0 QUIET)
-  if(NOT OpenCV_FOUND)
-    message(FATAL_ERROR "OpenCV >= 3.0 not found")
-  endif()
-endif()
+find_package(OpenCV 4.4 REQUIRED COMPONENTS opencv_core)
 message(STATUS "Use OpenCV ${OpenCV_VERSION}")
 
 # include headers
@@ -70,11 +64,8 @@ if(BUILD_DBoW2)
     OUTPUT_NAME  "dbow2"
     LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
-  # include libraries
-  target_include_directories(DBoW2 PRIVATE ${OpenCV_INCLUDE_DIRS})
-
   # link libraries
-  target_link_libraries(DBoW2 PRIVATE ${OpenCV_LIBS})
+  target_link_libraries(DBoW2 PRIVATE opencv_core)
 
   # install
   install(DIRECTORY include/DBoW2
